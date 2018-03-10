@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SignalR Chat Room</title>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/jquery.signalR-2.1.2.js"></script>
+    <script src="/signalr/hubs"></script>
+    
+</head>
+<style>
+    .red {
+        color: red;
+    }
+    .blue {
+        color: blue;
+    }
+</style>
+<body ng-app="MyApp">
+    <div ng-controller="signalRChatRoomController as r" >
+        <h2>Chat Room</h2>
+        <div ng-show="!r.signIn">
+            <input type="text" placeholder="Username" ng-model="r.userName">
+            <button type="button" ng-click="r.submit()">Submit</button>
+        </div>
+        <div ng-show="r.signIn">
+            Welcome {{r.userLoggedIn}}
+            <button type="button" ng-click="r.logout()">Logout</button>
+        </div>
+        <br>
+
+        <input type="text" ng-model="r.message" ng-keypress="r.typing($event)">
+        <button type="button" ng-click="r.send()">Send</button>
+        <div id="isTypingContainer">
+            {{r.typer}} is Typing ...
+        </div>
+        
+        <hr>
+        <div ng-repeat="convo in r.conversation track by $index">
+            <p>{{convo.messageCaller}} 
+                <span style="font-size: 80%; font-style: italic;" ng-class="{red: r.userLoggedIn !== convo.nameCaller, blue: r.userLoggedIn === convo.nameCaller}">{{convo.nameCaller}}</span>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.js"></script>
+    <script src="myApp.js"></script>
+    <script src="signalRChatRoomController.js"></script>
+</body>
+</html>
